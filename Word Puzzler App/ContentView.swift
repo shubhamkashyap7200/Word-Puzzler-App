@@ -40,6 +40,7 @@ struct ContentView: View {
                     }
                 }
             }
+            .listStyle(.automatic)
             
             .navigationTitle(rootWord)
             .toolbar {
