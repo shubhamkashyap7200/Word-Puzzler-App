@@ -15,7 +15,7 @@ struct ContentView: View {
     @State private var errorTitle = ""
     @State private var errorMessage = ""
     @State private var showingError = false
-    
+    @State private var scoreCount = 0
     
     // MARK: Body
     var body: some View {
@@ -43,10 +43,17 @@ struct ContentView: View {
             
             .navigationTitle(rootWord)
             .toolbar {
-                Button("Restart") {
-                    startGame()
+                ToolbarItem(placement: .topBarLeading) {
+                    Text("Score: \(scoreCount)")
                 }
-                .buttonStyle(.bordered)
+                    
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Restart") {
+                        startGame()
+                    }
+                    .foregroundStyle(Color.indigo)
+                    .buttonStyle(.bordered)
+                }
             }
             .onSubmit(addNewWord)
             .onAppear(perform: startGame)
@@ -92,6 +99,7 @@ struct ContentView: View {
             return
         }
 
+        scoreCount += 1
         
         withAnimation {
             usedWords.insert(answer, at: 0)
@@ -106,7 +114,7 @@ struct ContentView: View {
     }
     
     private func isPossible(word: String) -> Bool {
-        guard word.count > 3 else { return false }
+        guard word.count >= 3 else { return false }
         var tempWord = rootWord
         
         for letter in word {
