@@ -42,6 +42,12 @@ struct ContentView: View {
             }
             
             .navigationTitle(rootWord)
+            .toolbar {
+                Button("Restart") {
+                    startGame()
+                }
+                .buttonStyle(.bordered)
+            }
             .onSubmit(addNewWord)
             .onAppear(perform: startGame)
             .alert(errorTitle, isPresented: $showingError) {
@@ -95,10 +101,12 @@ struct ContentView: View {
     }
     
     private func isOriginal(word: String) -> Bool {
+        guard word != rootWord else { return false }
         return !usedWords.contains(word)
     }
     
     private func isPossible(word: String) -> Bool {
+        guard word.count > 3 else { return false }
         var tempWord = rootWord
         
         for letter in word {
